@@ -25,8 +25,8 @@ ${REGULAMIN_DLA_ZAMOWIEN}   Regulamin dla zamówień za pośrednictwem www.zalan
 
 *** Test Cases ***
 
-Zalogowanie klienta sklepu Zalando
-    Uruchomienie przegladarki ze strona Zalando.com
+Logowanie z uzyciem prawidlowych danych do logowania
+    Uruchomienie przegladarki ze strona Zalando
     Klikniecie przycisku Zaloguj
     Wprowadzenie nazwy uzytkownika
     Wprowadzenie hasla do konta uzytkownika
@@ -34,14 +34,14 @@ Zalogowanie klienta sklepu Zalando
     Weryfikacja czy logowanie sie powiodlo
     Zamkniecie przegladarki
 
-Wyswietlenie przedmiotow w stylu klasycznym z sekcji Stylizacje
-    Uruchomienie przegladarki ze strona Zalando.com
-    Klikniecie w Stylizacje
+Wyswietlenie przedmiotow w stylu klasycznym z kategorii Stylizacje
+    Uruchomienie przegladarki ze strona Zalando
+    Klikniecie w pasku nawigacji w Stylizacje
     Weryfikacja czy strona ze stylizacjami sie wyswietla
     Zamkniecie przegladarki
 
-Zalogowanie klienta sklepu Zalando - nieprawidlowe dane logowania
-    Uruchomienie przegladarki ze strona Zalando.com
+Logowanie z uzyciem nieprawidlowej nazwy uzytkownika
+    Uruchomienie przegladarki ze strona Zalando
     Klikniecie przycisku Zaloguj
     Wprowadzenie blednej nazwy uzytkownika
     Wprowadzenie hasla do konta uzytkownika
@@ -49,7 +49,7 @@ Zalogowanie klienta sklepu Zalando - nieprawidlowe dane logowania
     Zamkniecie przegladarki
 
 Dodawanie produktu do listy zyczen
-    Uruchomienie przegladarki ze strona Zalando.com
+    Uruchomienie przegladarki ze strona Zalando
     Klikniecie przycisku Zaloguj
     Wprowadzenie nazwy uzytkownika
     Wprowadzenie hasla do konta uzytkownika
@@ -62,7 +62,7 @@ Dodawanie produktu do listy zyczen
     Zamkniecie przegladarki
 
 Sprawdzenie czy sklep posiada regulamin zakupow
-    Uruchomienie przegladarki ze strona Zalando.com
+    Uruchomienie przegladarki ze strona Zalando
     Klikniecie w regulamin
     Weryfikacja czy strona z regulaminem sie wyswietla
     Zamkniecie przegladarki
@@ -71,7 +71,7 @@ Sprawdzenie czy sklep posiada regulamin zakupow
 *** Keywords ***
 
 
-Uruchomienie przegladarki ze strona Zalando.com
+Uruchomienie przegladarki ze strona Zalando
       Open browser     ${LOGIN_URL}    ${BROWSER}
 
 Klikniecie przycisku Zaloguj
@@ -98,7 +98,7 @@ Weryfikacja czy logowanie sie powiodlo
       Wait until page contains   ${Witaj Tester}
       Capture Page Screenshot
 
-Klikniecie w Stylizacje
+Klikniecie w pasku nawigacji w Stylizacje
       Wait until element is visible   ${STYLIZACJE}
       sleep   1
       Click Element   ${STYLIZACJE}
@@ -112,7 +112,7 @@ Klikniecie w jakikolwiek produkt
       Sleep   1
 
 Klikniecie logo Zalando - przejscie na strone glowna
-      Sleep    10
+      Sleep    5
       Click Element   ${ZALANDO}
 
 Klikniecie dodaj do listy zyczen
