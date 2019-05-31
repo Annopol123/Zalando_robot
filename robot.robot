@@ -1,71 +1,79 @@
 *** Settings ***
 Library   Selenium2Library
 
+Test Setup     Uruchomienie przegladarki ze strona Zalando
+Test Teardown  Zamkniecie przegladarki
+
 
 *** Variables ***
 
-${BROWSER}   Firefox
-${ZALOGUJ}    css=.z-navicat-header_navToolItem-profile
+${BROWSER}   Chrome
+${IKONA_ZALOGUJ_SIE}    css=.z-navicat-header_navToolItem-profile
 ${LOGIN_URL}   https://www.zalando.pl/kobiety-home/
-${UZYTKOWNIK}   abcd@abcde.pl.test
+${UZYTKOWNIK}     abcd@abcde.pl.test
+${BLEDNY_LOGIN}   abcd@abcde.pl.test.test
 ${HASLO}   testowanie
 ${POLE_LOGIN}  css=input[name='login.email']
 ${POLE_HASLO}   css=input[name='login.password']
-${PRZYCISK}   css=button.z-button.z-coast-reef_login_button.z-button--primary.z-button--button
+${PRZYCISK_ZALOGUJ_SIE}   css=button.z-button.z-coast-reef_login_button.z-button--primary.z-button--button
 ${WITAJ_TESTER}   Witaj Tester
-${BLEDNY_LOGIN}   tester
-${STYLIZACJE}   css=.z-navicat-header_categoryListLinkText
-${POMYSLY_NA_STYLIZACJE}   Pomysły na stylizacje
+${COS_POSZLO_NIE_TAK}   Coś poszło nie tak.
+${POMOC I KONTAKT}   css=span.z-navicat-header-uspBar_message-split_styled:nth-child(1) > a:nth-child(1)
+${POKAZ MOJE ZAMOWIENIA}   css=.intro__link--orders
+${MOJE ZAMOWIENIA}   Moje zamówienia
 ${POZYCJA_TOWAROWA}   css=a[href$='11.html']
 ${ZALANDO}     css=img.z-navicat-header_svgLogo
 ${DODAJ_DO_LISTY_ZYCZEN}   css=#z-pdp-topSection-addToWishlistButton
 ${CZERWONE_SERCE}   css=.h-icon-heart_filled
 ${REGULAMIN}   css=a.z-navigation-footer_subFooterLink:nth-child(3)
 ${REGULAMIN_DLA_ZAMOWIEN}   Regulamin dla zamówień za pośrednictwem www.zalando.pl
+${MENU_MOJE_KONTO}  css=#looneytunes-user-account nav
+${TWOJE_ULUBIONE_MARKI}   Twoje ulubione marki
 
 *** Test Cases ***
 
 Logowanie z uzyciem prawidlowych danych do logowania
-    Uruchomienie przegladarki ze strona Zalando
-    Klikniecie przycisku Zaloguj
+    [Tags]  Krytyczny
+    Klikniecie ikonki Zaloguj
     Wprowadzenie nazwy uzytkownika
     Wprowadzenie hasla do konta uzytkownika
-    Wcisniecie przycisku logowania
+    Klikniecie przycisku logowania
     Weryfikacja czy logowanie sie powiodlo
-    Zamkniecie przegladarki
 
-Wyswietlenie przedmiotow w stylu klasycznym z kategorii Stylizacje
-    Uruchomienie przegladarki ze strona Zalando
-    Klikniecie w pasku nawigacji w Stylizacje
-    Weryfikacja czy strona ze stylizacjami sie wyswietla
-    Zamkniecie przegladarki
 
 Logowanie z uzyciem nieprawidlowej nazwy uzytkownika
-    Uruchomienie przegladarki ze strona Zalando
-    Klikniecie przycisku Zaloguj
+    [Tags]  Krytyczny
+    Klikniecie ikonki Zaloguj
     Wprowadzenie blednej nazwy uzytkownika
     Wprowadzenie hasla do konta uzytkownika
-    Wcisniecie przycisku logowania
-    Zamkniecie przegladarki
+    Klikniecie przycisku logowania
+    Weryfikacja czy logowanie sie nie powiodlo
 
-Dodawanie produktu do listy zyczen
-    Uruchomienie przegladarki ze strona Zalando
-    Klikniecie przycisku Zaloguj
+Wyswietlenie pozycji menu z Moje Konto
+    [Tags]  Niski
+    Klikniecie ikonki Zaloguj
     Wprowadzenie nazwy uzytkownika
     Wprowadzenie hasla do konta uzytkownika
-    Wcisniecie przycisku logowania
+    Klikniecie przycisku logowania
+    Sprawdzenie czy menu Moje Konto zawiera tekst "Twoje ulubione marki"
+
+Dodawanie produktu do listy zyczen
+    [Tags]  Wysoki
+    Klikniecie ikonki Zaloguj
+    Wprowadzenie nazwy uzytkownika
+    Wprowadzenie hasla do konta uzytkownika
+    KLikniecie przycisku logowania
     Klikniecie logo Zalando - przejscie na strone glowna
     Klikniecie w jakikolwiek produkt
     Klikniecie dodaj do listy zyczen
+    Capture Page Screenshot
     Sprawdzenie czy towar znajduje sie na liscie zyczen
     Klikniecie dodaj do listy zyczen  # ponowne klikniecie powoduje usuniecie z listy zyczen
-    Zamkniecie przegladarki
 
 Sprawdzenie czy sklep posiada regulamin zakupow
-    Uruchomienie przegladarki ze strona Zalando
+    [Tags]  Krytyczny
     Klikniecie w regulamin
     Weryfikacja czy strona z regulaminem sie wyswietla
-    Zamkniecie przegladarki
 
 
 *** Keywords ***
@@ -74,14 +82,25 @@ Sprawdzenie czy sklep posiada regulamin zakupow
 Uruchomienie przegladarki ze strona Zalando
       Open browser     ${LOGIN_URL}    ${BROWSER}
 
-Klikniecie przycisku Zaloguj
-      Wait until element is visible  ${ZALOGUJ}
-      Click Element  ${ZALOGUJ}
+Klikniecie ikonki Zaloguj
+      Wait until element is visible  ${IKONA_ZALOGUJ_SIE}
+      Click Element  ${IKONA_ZALOGUJ_SIE}
 
 Wprowadzenie nazwy uzytkownika
       Wait until element is visible  ${POLE_LOGIN}
       sleep    1
       Input Text     ${POLE_LOGIN}   ${UZYTKOWNIK}
+
+Klikniecie przycisku pomoc i kontakt
+      Wait until element is visible  ${POMOC I KONTAKT}
+      Click Element   ${POMOC I KONTAKT}
+
+Klikniecie w pokaz moje zamowienia
+      sleep   1
+      Click Element   ${POKAZ MOJE ZAMOWIENIA}
+
+Sprawdzenie czy wyswietlila sie strona z zamowieniami
+      Page should contain   ${MOJE ZAMOWIENIA}
 
 Wprowadzenie blednej nazwy uzytkownika
       Wait until element is visible  ${POLE_LOGIN}
@@ -91,21 +110,14 @@ Wprowadzenie blednej nazwy uzytkownika
 Wprowadzenie hasla do konta uzytkownika
       Input Text   ${POLE_HASLO}    ${HASLO}
 
-Wcisniecie przycisku logowania
-      Click Button    ${PRZYCISK}
+Klikniecie przycisku logowania
+      Click Button    ${PRZYCISK_ZALOGUJ_SIE}
 
 Weryfikacja czy logowanie sie powiodlo
       Wait until page contains   ${Witaj Tester}
-      Capture Page Screenshot
 
-Klikniecie w pasku nawigacji w Stylizacje
-      Wait until element is visible   ${STYLIZACJE}
-      sleep   1
-      Click Element   ${STYLIZACJE}
-
-Weryfikacja czy strona ze stylizacjami sie wyswietla
-      Wait until page contains   ${POMYSLY NA STYLIZACJE}
-      Capture Page Screenshot
+Weryfikacja czy logowanie sie nie powiodlo
+      Wait until page contains   ${COS_POSZLO_NIE_TAK}
 
 Klikniecie w jakikolwiek produkt
       Click Element   ${POZYCJA_TOWAROWA}
@@ -121,14 +133,17 @@ Klikniecie dodaj do listy zyczen
 
 Sprawdzenie czy towar znajduje sie na liscie zyczen
       Page should contain element  ${CZERWONE_SERCE}
-      Capture Page Screenshot
 
 Klikniecie w regulamin
       Click element   ${REGULAMIN}
 
 Weryfikacja czy strona z regulaminem sie wyswietla
       Page should contain   ${REGULAMIN_DLA_ZAMOWIEN}
-      Capture Page Screenshot
 
 Zamkniecie przegladarki
+      Capture Page Screenshot
       Close All Browsers
+
+Sprawdzenie czy menu Moje Konto zawiera tekst "Twoje ulubione marki"
+      Wait Until Element Contains   ${MENU_MOJE_KONTO}  ${TWOJE_ULUBIONE_MARKI}
+
