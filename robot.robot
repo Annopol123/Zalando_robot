@@ -91,17 +91,6 @@ Wprowadzenie nazwy uzytkownika
       sleep    1
       Input Text     ${POLE_LOGIN}   ${UZYTKOWNIK}
 
-Klikniecie przycisku pomoc i kontakt
-      Wait until element is visible  ${POMOC I KONTAKT}
-      Click Element   ${POMOC I KONTAKT}
-
-Klikniecie w pokaz moje zamowienia
-      sleep   1
-      Click Element   ${POKAZ MOJE ZAMOWIENIA}
-
-Sprawdzenie czy wyswietlila sie strona z zamowieniami
-      Page should contain   ${MOJE ZAMOWIENIA}
-
 Wprowadzenie blednej nazwy uzytkownika
       Wait until element is visible  ${POLE_LOGIN}
       sleep    1
